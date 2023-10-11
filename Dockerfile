@@ -1,5 +1,5 @@
 FROM openjdk:17
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ARG WAR_FILE=build/libs/Real_java_spring-0.0.1-SNAPSHOT.war
+COPY ${WAR_FILE} app.war
+ENTRYPOINT ["java","-jar","/app.war"]
 EXPOSE 8080
