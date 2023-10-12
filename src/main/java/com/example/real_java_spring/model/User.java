@@ -11,6 +11,15 @@ import org.springframework.data.annotation.Id;
 @Table(name = "users")
 public class User {
     @Getter
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cart cart;
+
+    // Getters and setters
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+    @Getter
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

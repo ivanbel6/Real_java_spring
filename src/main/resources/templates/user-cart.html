@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User Cart</title>
+    <!-- CSS Styles go here -->
+</head>
+<body>
+<h2>Your Shopping Cart</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cartItem : ${cart.items}">
+        <td th:text="${cartItem.product.name}"></td>
+        <td th:text="${cartItem.quantity}"></td>
+        <td th:text="${cartItem.product.price}"></td>
+        <td>
+            <a th:href="@{'/cart/update/'+${cartItem.id}}">Update</a> |
+            <a th:href="@{'/cart/delete/'+${cartItem.id}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/products">Continue Shopping</a>
+</body>
+</html>

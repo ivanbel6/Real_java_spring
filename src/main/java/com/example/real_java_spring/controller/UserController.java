@@ -1,6 +1,10 @@
 package com.example.real_java_spring.controller;
 
+import com.example.real_java_spring.model.Cart;
+import com.example.real_java_spring.model.Product;
 import com.example.real_java_spring.model.User;
+import com.example.real_java_spring.service.CartService;
+import com.example.real_java_spring.service.ProductService;
 import com.example.real_java_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final CartService cartService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CartService cartService) {
         this.userService = userService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/users")
@@ -58,4 +64,18 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/users";
     }
+    @GetMapping("/user-cart/{id}")
+    public String getUserCart(@PathVariable("id") Long id, Model model){
+        User user = userService.findById(id);
+        Cart cart = user.getCart();
+        model.addAttribute("cart", cart);
+        return "user-cart";
+    }
+    @GetMapping("/products")
+    public String getAllProducts(Model model){
+        List<Product> products = ProductService.getAllProducts();
+        model.addAttribute("products", products);
+        return "products";
+    }
+
 }

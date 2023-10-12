@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public User findById(Long id){
-        return userRepository.getById(id);
+        return userRepository.getReferenceById(id);
     }
 
     public List<User> findAll(){

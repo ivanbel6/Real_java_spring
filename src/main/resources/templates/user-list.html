@@ -35,6 +35,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Age</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -43,8 +44,11 @@
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.age}"></td>
-                <td><a th:href="@{/user-update/{id}(id=${user.id})}">Edit</a></td>
-                <td><a th:href="@{/user-delete/{id}(id=${user.id})}">Delete</a></td>
+                <td>
+                    <a th:href="@{/user-update/{id}(id=${user.id})}">Edit</a> |
+                    <a th:href="@{/user-delete/{id}(id=${user.id})}">Delete</a> |
+                    <a th:href="@{/user-cart/{id}(id=${user.id})}">Cart</a>
+                </td>
             </tr>
             </tbody>
         </table>
