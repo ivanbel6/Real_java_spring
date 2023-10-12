@@ -14,13 +14,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public User findById(Long id){
-        return userRepository.getReferenceById(id);
+        return userRepository.findById(id).orElse(null);
     }
 
     public List<User> findAll(){

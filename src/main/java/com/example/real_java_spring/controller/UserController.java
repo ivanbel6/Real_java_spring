@@ -19,12 +19,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final CartService cartService;
+    private final ProductService productService; // Теперь автовнедряем ProductService
 
     @Autowired
-    public UserController(UserService userService, CartService cartService) {
+    public UserController(UserService userService, ProductService productService) {
         this.userService = userService;
-        this.cartService = cartService;
+        this.productService = productService; // и здесь
     }
 
     @GetMapping("/users")
@@ -73,7 +73,7 @@ public class UserController {
     }
     @GetMapping("/products")
     public String getAllProducts(Model model){
-        List<Product> products = ProductService.getAllProducts();
+        List<Product> products = productService.getAllProducts(); // теперь ProductService не статический
         model.addAttribute("products", products);
         return "products";
     }

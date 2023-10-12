@@ -9,19 +9,18 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    private static ProductRepository productRepository = null;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
-        ProductService.productRepository = productRepository;
+        this.productRepository = productRepository;
     }
 
-    public static List<Product> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
         return productRepository.findById(Math.toIntExact(id)).orElse(null);
     }
-
-
 }
+
