@@ -40,7 +40,7 @@
         <td th:text="${cartItem.product.price}"></td>
         <td>
             <a th:href="@{'/cart/update/'+${cartItem.id}}" style="text-decoration:none;color:blue;">Update</a> |
-            <form th:action="@{'/cart/delete/'+${cartItem.id}}" method="post">
+            <form th:action="@{'/delete/'+${cartItem.id}}" method="post">
                 <input type="submit" value="Delete" style="color:white;background-color:red;border:none;border-radius:5px;padding:5px 10px;">
             </form>
         </td>
