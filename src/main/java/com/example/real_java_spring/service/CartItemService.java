@@ -34,5 +34,9 @@ public class CartItemService {
     public int getQuantity(CartItem cartItem) {
         return cartItem.getQuantity();
     }
+
+    public void saveCartItem(CartItem cartItem) {
+        cartItemRepository.save(cartItem);
+    }
 }
 

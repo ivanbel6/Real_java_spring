@@ -7,11 +7,15 @@ import com.example.real_java_spring.service.CartItemService;
 import com.example.real_java_spring.service.CartService;
 import com.example.real_java_spring.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+
+
 
 @Controller
 public class CartController {
@@ -34,12 +38,6 @@ public class CartController {
         return cartService.getCartById(cartId);
     }
 
-    @PostMapping("/{cartId}/add/{productId}")
-    public void addItemToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity) { // добавляем параметр quantity
-        Cart cart = cartService.getCartById(cartId);
-        Product product = productService.getProductById(productId);
-        cartService.addItemToCart(cart, product, quantity); // передаем quantity
-    }
 
     @PostMapping("/{cartId}/remove/{productId}")
     public void removeItemFromCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity) { // добавляем параметр quantity
@@ -71,6 +69,13 @@ public class CartController {
         cartItemService.deleteCartItem(cartItem);
         String referer = request.getHeader("Referer");
         return "redirect:" + referer.substring(0, referer.lastIndexOf('/') + 1) + cartId;
+    }
+    @PostMapping("/{cartId}/add/{productId}")
+    public String addItemToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity,
+                                HttpServletRequest request) {
+        cartService.addItemToCart(cartId, productId, quantity);
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
 

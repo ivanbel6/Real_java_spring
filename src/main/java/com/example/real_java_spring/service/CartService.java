@@ -24,14 +24,19 @@ public class CartService {
         return cartRepository.findById(Math.toIntExact(id)).orElse(null);
     }
 
-    public void addItemToCart(Cart cart, Product product, int quantity) { // добавляем параметр quantity
-        CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-        cart.getCartItems().add(cartItem);
-        productService.decreaseProductQuantity(product.getId(), quantity); // decrease product quantity
-        cartRepository.save(cart);
+    public void addItemToCart(Long cartId, Long productId, int quantity) {
+        Cart cart = getCartById(cartId);
+        Product product = productService.getProductById(productId);
+
+        if (cart != null && product != null) {
+            CartItem cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+
+            cartItemService.saveCartItem(cartItem);
+            productService.decreaseProductQuantity(productId,quantity);
+        }
     }
 
     public void removeItemFromCart(Cart cart, Product product, int quantity) { // добавляем параметр quantity

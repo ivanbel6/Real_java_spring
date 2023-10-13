@@ -24,10 +24,8 @@
     <td th:text="${product.description}"/>
     <td th:text="${product.quantity}"/>
     <td>
-      <form th:action="@{/cart/{cartId}/add/{productId}(cartId=${cartId}, productId=${product.id})}" method="post">
-        <label>
-          <input type="number" name="quantity" min="1" max="${product.quantity}" placeholder="Quantity"/>
-        </label>
+      <form th:action="@{'/' + ${cartId} + '/add/' + ${product.id}}" method="post">
+        <input type="number" name="quantity" min="1" max="${product.quantity}">
         <button type="submit">Add to cart</button>
       </form>
     </td>
