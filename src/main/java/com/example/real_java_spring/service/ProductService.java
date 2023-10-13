@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -22,5 +21,20 @@ public class ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(Math.toIntExact(id)).orElse(null);
     }
-}
 
+    public void decreaseProductQuantity(Long id, int quantity){
+        Product product = getProductById(id);
+        if(product!=null){
+            product.setQuantity(product.getQuantity()-quantity);
+            productRepository.save(product);
+        }
+    }
+
+    public void increaseProductQuantity(Long id, int quantity){
+        Product product = getProductById(id);
+        if(product!=null){
+            product.setQuantity(product.getQuantity()+quantity);
+            productRepository.save(product);
+        }
+    }
+}

@@ -29,17 +29,17 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/add/{productId}")
-    public void addItemToCart(@PathVariable Long cartId, @PathVariable Long productId) {
+    public void addItemToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity) { // добавляем параметр quantity
         Cart cart = cartService.getCartById(cartId);
         Product product = productService.getProductById(productId);
-        cartService.addItemToCart(cart, product);
+        cartService.addItemToCart(cart, product, quantity); // передаем quantity
     }
 
     @PostMapping("/{cartId}/remove/{productId}")
-    public void removeItemFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+    public void removeItemFromCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity) { // добавляем параметр quantity
         Cart cart = cartService.getCartById(cartId);
         Product product = productService.getProductById(productId);
-        cartService.removeItemFromCart(cart, product);
+        cartService.removeItemFromCart(cart, product, quantity); // передаем quantity
     }
 
     @GetMapping("/{cartId}/items")
