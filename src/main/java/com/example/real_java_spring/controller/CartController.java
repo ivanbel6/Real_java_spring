@@ -18,6 +18,10 @@ public class CartController {
     private final CartService cartService;
     private final ProductService productService;
     private final CartItemService cartItemService;
+
+
+
+
     @Autowired
     public CartController(CartService cartService, ProductService productService, CartItemService cartItemService) {
         this.cartService = cartService;
@@ -59,11 +63,15 @@ public class CartController {
     public String deleteCartItem(@PathVariable Long cartItemId, HttpServletRequest request) {
         CartItem cartItem = cartItemService.getCartItemById(cartItemId);
         Long cartId = cartItem.getCart().getUser().getId();  // we get the id of the cart before deleting the item
+
+        var quanitu = cartItemService.getQuantity(cartItem);
+        var productId = cartItem.getProduct().getId();
+        productService.increaseProductQuantity(productId,quanitu);
+
         cartItemService.deleteCartItem(cartItem);
         String referer = request.getHeader("Referer");
         return "redirect:" + referer.substring(0, referer.lastIndexOf('/') + 1) + cartId;
     }
-
 
 
 }

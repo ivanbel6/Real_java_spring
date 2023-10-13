@@ -30,5 +30,9 @@ public class CartItemService {
     public CartItem getCartItemById(Long cartItemId) {
         return cartItemRepository.findById(Math.toIntExact(cartItemId)).orElse(null);
     }
+
+    public int getQuantity(CartItem cartItem) {
+        return cartItem.getQuantity();
+    }
 }
 
