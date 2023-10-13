@@ -65,17 +65,23 @@ public class UserController {
         return "redirect:/users";
     }
     @GetMapping("/user-cart/{id}")
-    public String getUserCart(@PathVariable("id") Long id, Model model){
+    public String getUserCart(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
         Cart cart = user.getCart();
         model.addAttribute("cart", cart);
+        model.addAttribute("userId", id); // Добавлено для передачи userId обратно при нажатии на "Continue Shopping"
         return "user-cart";
     }
-    @GetMapping("/products")
-    public String getAllProducts(Model model){
-        List<Product> products = productService.getAllProducts(); // теперь ProductService не статический
+    @GetMapping("/products/{userId}")
+    public String getAllProducts(@PathVariable("userId") Long userId, Model model) {
+        List<Product> products = productService.getAllProducts();
+        User user = userService.findById(userId);
+        if (user != null) {
+            model.addAttribute("cartId", user.getCart().getId());
+        }
         model.addAttribute("products", products);
         return "products";
     }
-
 }
+
+
