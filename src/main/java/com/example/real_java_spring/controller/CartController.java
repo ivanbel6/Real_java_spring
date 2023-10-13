@@ -53,11 +53,14 @@ public class CartController {
         cartItemService.updateCartItemQuantity(cartItem, quantity);
     }
 
-    @PostMapping("/{cartItemId}/delete")
-    public void deleteCartItem(@PathVariable Long cartItemId) {
+    @PostMapping("/delete/{cartItemId}")
+    public String deleteCartItem(@PathVariable Long cartItemId) {
         CartItem cartItem = cartItemService.getCartItemById(cartItemId);
+        Long cartId = cartItem.getCart().getId();  // we get the id of the cart before deleting the item
         cartItemService.deleteCartItem(cartItem);
+        return "redirect:/user-cart/" + cartId; // Removed the extra "<" character in the redirected URL
     }
+
 
 
 }
