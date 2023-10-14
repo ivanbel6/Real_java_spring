@@ -9,10 +9,14 @@ import com.example.real_java_spring.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -71,9 +75,22 @@ public class CartController {
         return "redirect:" + referer.substring(0, referer.lastIndexOf('/') + 1) + cartId;
     }
     @PostMapping("/{cartId}/add/{productId}")
-    public String addItemToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam int quantity,
-                                HttpServletRequest request) {
+    public String addItemToCart(
+            @PathVariable Long cartId,
+            @PathVariable Long productId,
+            @RequestParam int quantity,
+            HttpServletRequest request
+    ) {
+        Product product = productService.getProductById(productId);
+
+        if (product.getQuantity() < quantity) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Нельзя добавить товар в таком количестве. Доступное к добавлению количество товара: " + product.getQuantity());
+        }
+
         cartService.addItemToCart(cartId, productId, quantity);
+
+        //Переадресация на URL из заголовка "Referer".
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }

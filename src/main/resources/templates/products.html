@@ -2,9 +2,119 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Product List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f3f3;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+    }
+
+    table {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-top: 50px;
+    }
+
+    table thead tr {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    table th,
+    table td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    table tbody tr:nth-child(even) {
+      background-color: #ddd;
+    }
+
+    input[type=number] {
+      margin-right: 10px;
+    }
+
+    .btn-cart {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .btn-cart:hover {
+      background-color: #45a049;
+    }
+
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 <h1>Product List</h1>
+<a th:href="@{'/user-cart/' + ${userId}}" class="btn-cart">Go to Cart</a>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p th:if="${message}" th:text="${message}"></p>
+  </div>
+
+</div>
+
 <table>
   <thead>
   <tr>
@@ -18,11 +128,11 @@
   </thead>
   <tbody>
   <tr th:each="product : ${products}">
-    <td th:text="${product.id}"/>
-    <td th:text="${product.name}"/>
-    <td th:text="${product.price}"/>
-    <td th:text="${product.description}"/>
-    <td th:text="${product.quantity}"/>
+    <td th:text="${product.id}"></td>
+    <td th:text="${product.name}"></td>
+    <td th:text="${product.price}"></td>
+    <td th:text="${product.description}"></td>
+    <td th:text="${product.quantity}"></td>
     <td>
       <form th:action="@{'/' + ${cartId} + '/add/' + ${product.id}}" method="post">
         <input type="number" name="quantity" min="1" max="${product.quantity}">
@@ -32,5 +142,58 @@
   </tr>
   </tbody>
 </table>
+
+<script>
+  // Get the span element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Function to handle form submission
+  function addToCart(cartId, productId) {
+    var quantity = document.getElementById(productId + "-input").value;
+
+    // Create a new XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/" + cartId + "/add/" + productId, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        var modal = document.getElementById("myModal");
+        if (xhr.status === 200) {
+          // Successful response, show success message
+          modal.style.display = "block";
+          document.getElementById("modal-message").innerText = "Товар успешно добавлен в корзину!";
+          setTimeout(function() {
+            modal.style.display = "none";
+          }, 3000);
+        } else {
+          // Error response, show the error message
+          var json = JSON.parse(xhr.responseText);
+          modal.style.display = "block";
+          document.getElementById("modal-message").innerText = json.errorMessage;
+          setTimeout(function() {
+            modal.style.display = "none";
+          }, 3000);
+        }
+      }
+    };
+
+    xhr.send("quantity=" + encodeURIComponent(quantity));
+  }
+</script>
+
+
 </body>
 </html>
