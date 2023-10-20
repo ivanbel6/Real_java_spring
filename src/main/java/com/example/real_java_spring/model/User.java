@@ -5,31 +5,39 @@ import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 
+import java.util.Set;
 
-@Data //lam book - getters и setters
+
+@Data
 @Entity
 @Table(name = "users")
 public class User {
-    @Getter
-    @OneToOne(cascade = CascadeType.ALL)
-    private Cart cart;
 
-    // Getters and setters
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
     @Getter
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cart cart;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "age")
     private int age;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     public void setId(Long id) {
         this.id = id;

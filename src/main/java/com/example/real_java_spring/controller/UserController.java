@@ -3,7 +3,6 @@ package com.example.real_java_spring.controller;
 import com.example.real_java_spring.model.Cart;
 import com.example.real_java_spring.model.Product;
 import com.example.real_java_spring.model.User;
-import com.example.real_java_spring.service.CartService;
 import com.example.real_java_spring.service.ProductService;
 import com.example.real_java_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
