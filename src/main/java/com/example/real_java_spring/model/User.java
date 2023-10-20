@@ -31,6 +31,12 @@ public class User {
     @Column(name = "age")
     private int age;
 
+    @Column(name = "password")
+    private String password;
+
+    @Transient
+    private String confirmPassword;
+
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -41,6 +47,41 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return name;
+    }
+
+    public void setUsername(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
 }
