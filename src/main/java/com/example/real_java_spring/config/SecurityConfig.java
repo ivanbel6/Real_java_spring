@@ -41,12 +41,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests(auth -> {
-                    auth.requestMatchers("/").permitAll();
-                    auth.requestMatchers("/user").hasRole("USER");
-                    auth.requestMatchers("/admin").hasRole("ADMIN");
-                }).formLogin(Customizer.withDefaults()).build();
-
-
+                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/user-cart/**", "/products/**", "/{cartId}/add/{productId}").hasAuthority("USER");
+                    auth.requestMatchers("/**").hasAuthority("ADMIN");
+                })
+                .formLogin(Customizer.withDefaults())
+                .build();
     }
 }
 
