@@ -5,7 +5,12 @@ import com.example.real_java_spring.model.Product;
 import com.example.real_java_spring.model.User;
 import com.example.real_java_spring.service.ProductService;
 import com.example.real_java_spring.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +29,6 @@ public class UserController {
     public UserController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService; // и здесь
-    }
-
-    @GetMapping("/users")
-    public String findAll(Model model){
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
-        return "user-list";
     }
 
     @GetMapping("/user-create")
@@ -81,6 +79,28 @@ public class UserController {
         model.addAttribute("products", products);
         return "products";
     }
+
+
+    @GetMapping("/logout")
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/users")
+    public String findAll(Model model){
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "user-list";
+    }
+
+
+
+
+
 }
 
 
