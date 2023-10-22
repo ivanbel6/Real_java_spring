@@ -39,13 +39,11 @@ public class SecurityConfig {
         return http
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/login").permitAll();
-                    auth.requestMatchers("/user-cart/**", "/products/**", "/{cartId}/add/{productId}").hasAuthority("USER");
-                    auth.requestMatchers("/**,","/user-cart/**","/products/**","/{cartId}/add/{productId}").hasAuthority("ADMIN");
+                    auth.requestMatchers("/seller/**").hasAnyAuthority("SELLER","ADMIN");
+                    auth.requestMatchers("/user-cart/**", "/products/**", "/{cartId}/add/{productId}").hasAnyAuthority("USER", "ADMIN");
+                    auth.requestMatchers("/**").hasAuthority("ADMIN");
                 })
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
 }
-
-
-

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Add a New Product</h1>
+<form action="#" th:action="@{/seller/add-product}" th:object="${product}" method="post">
+    <label for="productName">Product Name:</label><br>
+    <input type="text" id="productName" name="productName" th:field="*{name}"><br>
+    <label for="productPrice">Product Price:</label><br>
+    <input type="number" id="productPrice" name="productPrice" th:field="*{price}"><br>
+    <!-- any other fields you need -->
+    <input type="submit" value="Add Product">
+</form>
+</body>
+</html>
